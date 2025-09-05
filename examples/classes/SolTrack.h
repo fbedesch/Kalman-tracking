@@ -28,8 +28,6 @@ private:
 	//
 	TMatrixDSym fCov;		// Full covariance matrix
 	//
-	TMatrixD DparDp(TVector3 xv, TVector3 pv); // Derivatives of parameters wrt track momentum
-	//
 public:
 	//
 	// Constructors
@@ -78,6 +76,11 @@ public:
 	Int_t HitList(Int_t *&ihh, Double_t *&rhh, Double_t *&phh, Double_t *&zhh);
 	Int_t HitListXYZ(Int_t *&ihh, Double_t *&Xh, Double_t *&Yh, Double_t *&Zh);
 	Int_t FirstHit(Double_t &Xfirst, Double_t &Yfirst, Double_t &Zfirst);	// First hit position
+	//
+	// Derivatives
+	TMatrixD DparDp(TVector3 xv, TVector3 pv); // Derivatives of parameters wrt track momentum
+	TVectorD DpDthetaRphi(Double_t Phase); // Derivative of momentum wrt MS transvers angle
+	TVectorD DpDthetaLng(Double_t Phase);  // Derivative of momentum wrt MS longitudinal angle
 	//
 	// Track graph
 	TGraph *TrkPlot();	// Graph with R-z plot of track trajectory

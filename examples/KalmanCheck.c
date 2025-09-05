@@ -14,7 +14,7 @@ void KalmanCheck(TString GEOM, Bool_t Res=kTRUE, Bool_t MS=kTRUE)
 	SolGeom* G = new SolGeom(GeoName);
 	// Start plotting class
 	KalmanCk * K = new KalmanCk(G);
-	K->DrawPtScan(10);	// Draw sample tracks
+	K->DrawPtScan(3);	// Draw sample tracks
 	K->SetMode(Res, MS);	// Set tracking mode
 	// Fill graphs
 	K->Fill();

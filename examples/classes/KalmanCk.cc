@@ -41,6 +41,39 @@ KalmanCk::KalmanCk(SolGeom *G)
 // Destructor
 KalmanCk::~KalmanCk() 
 {
+	// Clear all configuration vectors
+	fPt_fixA.clear();
+	fAngFa.clear();
+	fAng_fixPt.clear();
+	fPtFpt.clear();
+	// Clear all graphs
+	// Standard resolution graphs for pt scans
+	gs_D_Pt.clear();	// D resolution graphs for pt scans
+	gs_Phi0_Pt.clear();// Phi0 resolution graphs for pt scans
+	gs_Pt_Pt.clear();	// Pt resolution graphs for pt scans
+	gs_z0_Pt.clear();	// z0 resolution graphs for pt scans
+	gs_cot_Pt.clear();	// cot(theta) graphs for pt scans
+	//
+	// Kalman resolution graphs for pt scans
+	gk_D_Pt.clear();	// D resolution graphs for pt scans
+	gk_Phi0_Pt.clear();// Phi0 resolution graphs for pt scans
+	gk_Pt_Pt.clear();	// Pt resolution graphs for pt scans
+	gk_z0_Pt.clear();	// z0 resolution graphs for pt scans
+	gk_cot_Pt.clear();	// cot(theta) graphs for pt scans
+	//
+	// Standard resolution graphs for angle scans
+	gs_D_Ang.clear();		// D resolution graphs for angle scans
+	gs_Phi0_Ang.clear();	// Phi0 resolution graphs for angle scans
+	gs_Pt_Ang.clear();		// Pt resolution graphs for angle scans
+	gs_z0_Ang.clear();		// z0 resolution graphs for angle scans
+	gs_cot_Ang.clear();	// cot(theta) graphs for angle scans
+	//
+	// Kalman resolution graphs for angle scans
+	gk_D_Ang.clear();		// D resolution graphs for angle scans
+	gk_Phi0_Ang.clear();	// Phi0 resolution graphs for angle scans
+	gk_Pt_Ang.clear();		// Pt resolution graphs for angle scans
+	gk_z0_Ang.clear();		// z0 resolution graphs for angle scans
+	gk_cot_Ang.clear();	// cot(theta) graphs for angle scans
 }
 
 void KalmanCk::SetMode(Bool_t Res, Bool_t MS)
@@ -101,21 +134,22 @@ void KalmanCk::Fill()
 			//
 			TVector3 p(pt, 0.0, pz);	// Track 3-momentum
 			TVector3 x(0.0, 0.0, 0.0);	// Track starting point
-			SolTrack track(x, p, fG);	// Initialize track
 			// Standard results
-			track.CovCalc(fRes,fMS);		
-			asD_Pt(np)    = track.s_D()*1.e6;	// Convert to microns
-			asPhi0_Pt(np) = track.s_phi0();
-			asPt_Pt(np)   = track.s_pt();		// sigma(pt)/pt
-			asZ0_Pt(np)   = track.s_z0()*1.e6;	// Convert to microns
-			asCot_Pt(np)  = track.s_ct();
+			SolTrack Strack(x, p, fG);	// Initialize track
+			Strack.CovCalc(fRes,fMS);
+			asD_Pt(np)    = Strack.s_D()*1.e6;	// Convert to microns
+			asPhi0_Pt(np) = Strack.s_phi0();
+			asPt_Pt(np)   = Strack.s_pt();		// sigma(pt)/pt
+			asZ0_Pt(np)   = Strack.s_z0()*1.e6;	// Convert to microns
+			asCot_Pt(np)  = Strack.s_ct();
 			// Kalman results
-			track.KalmanCov(fRes, fMS);		
-			akD_Pt(np)    = track.s_D()*1.e6;	// Convert to microns
-			akPhi0_Pt(np) = track.s_phi0();
-			akPt_Pt(np)   = track.s_pt();		// sigma(pt)/pt
-			akZ0_Pt(np)   = track.s_z0()*1.e6;	// Convert to microns
-			akCot_Pt(np)  = track.s_ct();
+			SolTrack Ktrack(x, p, fG);	// Initialize track
+			Ktrack.KalmanCov(fRes, fMS);
+			akD_Pt(np)    = Ktrack.s_D()*1.e6;	// Convert to microns
+			akPhi0_Pt(np) = Ktrack.s_phi0();
+			akPt_Pt(np)   = Ktrack.s_pt();		// sigma(pt)/pt
+			akZ0_Pt(np)   = Ktrack.s_z0()*1.e6;	// Convert to microns
+			akCot_Pt(np)  = Ktrack.s_ct();
 		}
 		//
 		// Store results and fill graphs
@@ -203,21 +237,22 @@ void KalmanCk::Fill()
 			//
 			TVector3 p(pt, 0.0, pz);	// Track 3-momentum
 			TVector3 x(0.0, 0.0, 0.0);	// Track starting point
-			SolTrack track(x, p, fG);	// Initialize track
 			// Standard results
-			track.CovCalc(fRes,fMS);		
-			asD_Ang(na)    = track.s_D()*1.e6;	// Convert to microns
-			asPhi0_Ang(na) = track.s_phi0();
-			asPt_Ang(na)   = track.s_pt();		// sigma(pt)/pt
-			asZ0_Ang(na)   = track.s_z0()*1.e6;	// Convert to microns
-			asCot_Ang(na)  = track.s_ct();
+			SolTrack Strack(x, p, fG);	// Initialize track
+			Strack.CovCalc(fRes,fMS);
+			asD_Ang(na)    = Strack.s_D()*1.e6;	// Convert to microns
+			asPhi0_Ang(na) = Strack.s_phi0();
+			asPt_Ang(na)   = Strack.s_pt();		// sigma(pt)/pt
+			asZ0_Ang(na)   = Strack.s_z0()*1.e6;	// Convert to microns
+			asCot_Ang(na)  = Strack.s_ct();
 			// Kalman results
-			track.KalmanCov(fRes, fMS);		
-			akD_Ang(na)    = track.s_D()*1.e6;	// Convert to microns
-			akPhi0_Ang(na) = track.s_phi0();
-			akPt_Ang(na)   = track.s_pt();		// sigma(pt)/pt
-			akZ0_Ang(na)   = track.s_z0()*1.e6;	// Convert to microns
-			akCot_Ang(na)  = track.s_ct();
+			SolTrack Ktrack(x, p, fG);	// Initialize track
+			Ktrack.KalmanCov(fRes, fMS);
+			akD_Ang(na)    = Ktrack.s_D()*1.e6;	// Convert to microns
+			akPhi0_Ang(na) = Ktrack.s_phi0();
+			akPt_Ang(na)   = Ktrack.s_pt();		// sigma(pt)/pt
+			akZ0_Ang(na)   = Ktrack.s_z0()*1.e6;	// Convert to microns
+			akCot_Ang(na)  = Ktrack.s_ct();
 		}
 		//
 		// Store results and fill graphs
@@ -273,7 +308,7 @@ void KalmanCk::DrawPtScan(Int_t i){
 	// Loop over angles
 	//
 	if(i<0 || i>= fNpt_Fa){
-		std::cout<<"KalmanCh::DrawPtScan: Indexout of range. Set to "
+		std::cout<<"KalmanCh::DrawPtScan: Index out of range. Set to "
 		<<fNpt_Fa-1<<std::endl;}
 		
 	Double_t pt = fPt_fixA[i];

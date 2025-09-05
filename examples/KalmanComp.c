@@ -84,7 +84,7 @@ void KalmanComp(TString GEOM1, TString GEOM2, Bool_t Res=kTRUE, Bool_t MS=kTRUE)
 	//
 	TLegend* lg = new TLegend(0.2, 0.9, 0.6, 0.70); 
 	TString lPt1 = "Baseline DCH (B = 2T)";
-	TString lPt2 = "Smaller  DCH (B = 2T)";
+	TString lPt2 = "Heavier  DCH (B = 2T)";
 	//
 	// Draw GEOM1 pt resolutions
 	//
@@ -115,8 +115,8 @@ void KalmanComp(TString GEOM1, TString GEOM2, Bool_t Res=kTRUE, Bool_t MS=kTRUE)
 	Double_t res1 = K1->gk_Pt_Pt[i90]->Eval(PtPr);
 	Double_t res2 = K2->gk_Pt_Pt[j90]->Eval(PtPr);
 	cout<<"Pt= "<<PtPr<<", s(pt)/pt = "<<res1
-	<<" (STD Geo)"<<res2<<" (Short Geo)"<<endl;
-	cout<<"% degradation = "<<(res2-res1)/res1<<endl;
+	<<" (STD Geo)"<<res2<<" (Heavy Geo)"<<endl;
+	cout<<"% degradation = "<<100*(res2-res1)/res1<<"%"<<endl;
 
 
 	//
@@ -124,7 +124,7 @@ void KalmanComp(TString GEOM1, TString GEOM2, Bool_t Res=kTRUE, Bool_t MS=kTRUE)
 	//
 	//TLegend* lg = new TLegend(0.2, 0.9, 0.6, 0.70);
 	TString lPt1b3 = "Baseline DCH (B = 3T)";
-	TString lPt2b3 = "Smaller  DCH (B = 3T)";
+	TString lPt2b3 = "Heavier  DCH (B = 3T)";
 	//
 	// Draw GEOM1 pt resolutions
 	//
@@ -155,7 +155,7 @@ void KalmanComp(TString GEOM1, TString GEOM2, Bool_t Res=kTRUE, Bool_t MS=kTRUE)
 	Double_t res1b3 = K1b3->gk_Pt_Pt[i903]->Eval(PtPr);
 	Double_t res2b3 = K2b3->gk_Pt_Pt[j903]->Eval(PtPr);
 	cout<<"Pt= "<<PtPr<<", s(pt)/pt = "<<res1b3
-	<<" (STD Geo)"<<res2b3<<" (Short Geo)"<<endl;
-	cout<<"% degradation = "<<(res2-res1)/res1<<endl;
+	<<" (STD Geo)"<<res2b3<<" (Heavy Geo)"<<endl;
+	cout<<"% degradation = "<<100*(res2-res1)/res1<<"%"<<endl;
 }
 

@@ -35,6 +35,17 @@ TrkUtil::~TrkUtil()
 	fZmax = 0.0;				// Higher	DCH z
 }
 //
+// Utility for scalar product V1^T*M*V2
+//
+Double_t TrkUtil::Scalar(TVectorD V1, TVectorD V2, TMatrixDSym M)
+{
+	Int_t Nv1 = V1.GetNoElements();	// Get V1 length
+	// Store in matrix
+	TMatrixD V1m(1,Nv1,V1.GetMatrixArray());
+	TVectorD Vout = V1m*(M*V2);
+	return Vout(0);
+}
+//
 // Distance between two lines
 //
 void TrkUtil::LineDistance(TVector3 x0, TVector3 y0, TVector3 dirx, TVector3 diry, Double_t &sx, Double_t &sy, Double_t &distance)
@@ -532,6 +543,32 @@ TVector3 TrkUtil::Xtrack(TVectorD par, Double_t s)
 	//
 	TVector3 Xt(x, y, z);
 	return Xt;
+}
+//
+// Momentum trajectory
+//
+//
+TVector3 TrkUtil::Ptrack(TVectorD Par, Double_t s)
+{
+	if (fBz == 0.0)std::cout << "TrkUtil::Ptrack: Warning Bz not set" << std::endl;
+	//
+	return Ptrack(Par, s, fBz);
+}
+TVector3 TrkUtil::Ptrack(TVectorD par, Double_t s, Double_t Bz)
+{
+	//
+	// unpack parameters
+	Double_t p0 = par(1);
+	Double_t C = par(2);
+	Double_t ct = par(4);
+	//
+	Double_t pt = Bz * cSpeed() / TMath::Abs(2 * C);
+	Double_t px = pt * TMath::Cos(s + p0);
+	Double_t py = pt * TMath::Sin(s + p0);
+	Double_t pz = pt * ct;
+	//
+	TVector3 Ptot(px, py, pz);
+	return Ptot;
 }
 //
 // Phase
