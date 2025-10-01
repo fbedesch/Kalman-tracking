@@ -10,3 +10,5 @@ root> .L examples/LoadTrk.c+
 root>LoadTrk()
 
 root> KalmanCheck("./Geometries/GeoIDEA_NewDCH.txt")
+
+This program will generate plots using either the standard version or the Kalman version of the code.
