@@ -56,6 +56,7 @@ public:
 	// Covariance
 	TMatrixDSym Cov()		{ return fCov; }
 	// Track parameter covariance calculation
+	void OldCovCalc(Bool_t Res, Bool_t MS);
 	void CovCalc(Bool_t Res, Bool_t MS);
 	// Track parameter covariance calculation with Kalman filter
 	void KalmanCov(Bool_t Res, Bool_t MS, Double_t mass = 0.13957021);
