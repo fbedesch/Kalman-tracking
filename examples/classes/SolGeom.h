@@ -41,12 +41,12 @@ private:
 	Double_t fZminPos;	// Z of first disk in positive direction
 	Double_t fZminNeg;	// Z of first disk in positive direction
 	//
-	const Int_t fNdet = 10;  // Max number of tracking/passive detectors 
+	const Int_t fNdet = 20;  // Max number of tracking/passive detectors
 	Bool_t *fEnable; 	// Array of enabled detector
 	// 0: beam pipe, 1: Inner VTX pixels, 2: Outer VTX silicon, 3: Drift chamber
 	// 4: Outer silicon wrapper, 5: barrel pre-shower, 6: forward VTX pixels
 	// 7: forward Silicon wrapper, 8: forward pre-shower
-	const Int_t fNdty = 14;	// Number of detector types
+	const Int_t fNdty = 20;	// Number of detector types
 	TString *fDtype;		// Array with layer labels 
 	Int_t   *fDfstLay;	// Array with start layer number for given detector types
 	Double_t StereoHyp(Double_t *x, Double_t *p);
