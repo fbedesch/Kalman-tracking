@@ -25,37 +25,36 @@ void PlotGeo(TString GEOM)
 	//***************************************
 	// Plot material         ****************
 	//***************************************
-	Int_t nDet = 0;					// # detector types
+	Int_t nDet = G->Ndet();				// Max # detector types
 	// Define groups for output
 	std::vector<std::vector<TString *>> Groups;
 	std::vector<TString>gName;
 	// Beam pipe
 	gName.push_back("Pipe");
 	std::vector<TString *> vPipe;
-	vPipe.push_back(new TString("PIPE")); nDet++;
+	vPipe.push_back(new TString("PIPE"));
 	Groups.push_back(vPipe);
 	// Vertex detector
 	gName.push_back("Vertex");
 	std::vector<TString *> vVertex;
-	vVertex.push_back(new TString("VTXLOW")); 	nDet++;
-	vVertex.push_back(new TString("VTXHIGH")); 	nDet++;
-	vVertex.push_back(new TString("VTXDSK")); 	nDet++;
+	vVertex.push_back(new TString("VTXLOW"));
+	vVertex.push_back(new TString("VTXHIGH"));
+	vVertex.push_back(new TString("VTXDSK"));
 	Groups.push_back(vVertex);
 	// Drift chamber
 	gName.push_back("Drift Chamber");
 	std::vector<TString *> vDrift;
-	vDrift.push_back(new TString("DCHCANI")); 	nDet++;
-	vDrift.push_back(new TString("DCH")); 		nDet++;
-	vDrift.push_back(new TString("DCHCANO")); 	nDet++;
-	vDrift.push_back(new TString("DCHWALL")); 	nDet++;
+	vDrift.push_back(new TString("DCHCANI"));
+	vDrift.push_back(new TString("DCH"));
+	vDrift.push_back(new TString("DCHCANO"));
+	vDrift.push_back(new TString("DCHWALL"));
 	Groups.push_back(vDrift);
 	// Silicon wrapper
 	gName.push_back("Silicon Wrapper");
 	std::vector<TString *> vSWrap;
-	vSWrap.push_back(new TString("BSILWRP")); 	nDet++;
-	vSWrap.push_back(new TString("FSILWRP")); 	nDet++;
+	vSWrap.push_back(new TString("BSILWRP"));
+	vSWrap.push_back(new TString("FSILWRP"));
 	Groups.push_back(vSWrap);
-	std::cout<<"Total detectors used is "<<nDet+1<<std::endl;
 	//
 	// Printout groups
 	Int_t ng = (Int_t) Groups.size();
@@ -113,10 +112,10 @@ void PlotGeo(TString GEOM)
 		for(Int_t j=1; j<=Nbt; j++){
 			Double_t Th = hX0th[i]->GetBinCenter(j)*TMath::Pi()/180.;
 			//std::cout<<"#theta = "<<Th<<std::endl;
-			Double_t *Mat = new Double_t[nDet+1];
+			Double_t *Mat = new Double_t[nDet];
 			Mat = G->FracX0(Th);
 			Double_t x0 = 0;
-			for(Int_t k1=0; k1<=nDet; k1++){
+			for(Int_t k1=0; k1<nDet; k1++){
 				for(Int_t k2=0; k2<n; k2++){
 					if(G->dType(k1) == *List[k2]){
 						x0 += Mat[k1];
@@ -135,7 +134,7 @@ void PlotGeo(TString GEOM)
 			Double_t cs = hX0cs[i]->GetBinCenter(j);
 			//std::cout<<"cos(#theta) = "<<cs<<std::endl;
 			Double_t Th = TMath::ACos(cs);
-			Double_t *Mat = new Double_t[nDet+1];
+			Double_t *Mat = new Double_t[nDet];
 			Mat = G->FracX0(Th);
 			Double_t x0 = 0;
 			for(Int_t k1=0; k1<=nDet; k1++){

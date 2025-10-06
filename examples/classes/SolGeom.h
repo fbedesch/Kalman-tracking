@@ -63,8 +63,8 @@ public:
 	// Destructor
 	~SolGeom();
 	// Accessors
-	//const Int_t Ndet()				{ return fNdet; }
-	Double_t B()						{ return fB; }
+	Int_t Ndet()					{ return (Int_t)fNdet; }
+	Double_t B()					{ return fB; }
 	Int_t    Nl()					{ return fNlay; }
 	Int_t    Nm()					{ return fNm; }
 	Int_t    NBl()					{ return fBlay; }
