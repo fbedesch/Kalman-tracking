@@ -102,7 +102,8 @@ void SolGeom::SolGeoInit()
 	fstLayL = new Double_t[fNlMax];	// Stereo angle (rad) - 0(pi/2) = axial(z) layer - Lower side
 	fsgLayU = new Double_t[fNlMax];	// Resolution Upper side (meters) - 0 = no measurement
 	fsgLayL = new Double_t[fNlMax];	// Resolution Lower side (meters) - 0 = no measurement
-	fflLay = new Bool_t[fNlMax];		// measurement flag = T, scattering only = F
+	//fflLay = new Bool_t[fNlMax];		// measurement flag = T, scattering only = F
+	fflLay = new Double_t[fNlMax];		// layer efficiency
 	fEnable = new Bool_t[fNdet];		// list of enabled detectors
 	fDtype = new TString[fNdty];		// Array with layer labels 
 	fDfstLay = new Int_t[fNdty];		// Array with start layer
@@ -139,7 +140,7 @@ void SolGeom::SolGeoFill()
 		fstLayL[fNlay] = 0;			// Stereo angle (rad) - 0(pi/2) = axial(z) layer - Lower side
 		fsgLayU[fNlay] = 0.;			// Resolution Upper side (meters) - 0 = no measurement
 		fsgLayL[fNlay] = 0.;			// Resolution Lower side (meters) - 0 = no measurement
-		fflLay[fNlay] = kFALSE;		// measurement flag = T, scattering only = F
+		fflLay[fNlay]  = 0.;		// 0 is scattering layer
 		fNlay++; fBlay++;
 	}
 	//
@@ -163,7 +164,7 @@ void SolGeom::SolGeoFill()
 			fstLayL[fNlay] = TMath::Pi() / 2.;		// Stereo angle (rad) - 0(pi/2) = axial(z) layer - Lower side
 			fsgLayU[fNlay] = 3.E-6;				// Resolution Upper side (meters) - 0 = no measurement
 			fsgLayL[fNlay] = 3.E-6;				// Resolution Lower side (meters) - 0 = no measurement
-			fflLay[fNlay] = kTRUE;				// measurement flag = T, scattering only = F
+			fflLay[fNlay]  = 1.;				// 1 is measurement layer
 			fNlay++; fBlay++;
 			fNm++;
 		}
@@ -190,8 +191,7 @@ void SolGeom::SolGeoFill()
 			fstLayL[fNlay] = TMath::Pi() / 2.;	// Stereo angle (rad) - pi/2 = z layer - Lower side
 			fsgLayU[fNlay] = 7.E-6;				// Resolution Upper side (meters) - 0 = no measurement
 			fsgLayL[fNlay] = 7.E-6;				// Resolution Lower side (meters) - 0 = no measurement
-			fflLay[fNlay] = kTRUE;				// measurement flag = T, scattering only = F
-			//if (i == 0) fflLay[fNlay] = kFALSE;
+			fflLay[fNlay]  = 1.;				// 1 is measurement layer
 			fNlay++; fBlay++;
 			fNm++;
 		}
@@ -213,7 +213,7 @@ void SolGeom::SolGeoFill()
 		fstLayL[fNlay] = 0;			// Stereo angle (rad) - 0(pi/2) = axial(z) layer - Lower side
 		fsgLayU[fNlay] = 0.;			// Resolution Upper side (meters) - 0 = no measurement
 		fsgLayL[fNlay] = 0.;			// Resolution Lower side (meters) - 0 = no measurement
-		fflLay[fNlay] = kFALSE;		// measurement flag = T, scattering only = F
+		fflLay[fNlay]  = 0.;		// 0 is scattering layer
 		fNlay++; fBlay++;
 		//
 		// Drift chamber  detector
@@ -242,7 +242,7 @@ void SolGeom::SolGeoFill()
 			fstLayL[fNlay] = 0;					// Stereo angle (rad) - 0(pi/2) = axial(z) layer - Lower side
 			fsgLayU[fNlay] = 100.E-6;			// Resolution Upper side (meters) - 0 = no measurement
 			fsgLayL[fNlay] = 0;					// Resolution Lower side (meters) - 0 = no measurement
-			fflLay[fNlay] = kTRUE;				// measurement flag = T, scattering only = F
+			fflLay[fNlay]  = 1.;				// 1 is measurement layer
 			fNlay++; fBlay++;
 			fNm++;
 		}
@@ -261,7 +261,7 @@ void SolGeom::SolGeoFill()
 		fstLayL[fNlay] = 0;			// Stereo angle (rad) - 0(pi/2) = axial(z) layer - Lower side
 		fsgLayU[fNlay] = 0.;			// Resolution Upper side (meters) - 0 = no measurement
 		fsgLayL[fNlay] = 0.;			// Resolution Lower side (meters) - 0 = no measurement
-		fflLay[fNlay] = kFALSE;		// measurement flag = T, scattering only = F
+		fflLay[fNlay]  = 0.;		// 0 is scattering layer
 		fNlay++; fBlay++;
 	}
 	//
@@ -286,8 +286,7 @@ void SolGeom::SolGeoFill()
 			fstLayL[fNlay] = TMath::Pi() / 2.;	// Stereo angle (rad) - 0(pi/2) = axial(z) layer - Lower side
 			fsgLayU[fNlay] = 7.E-6;				// Resolution Upper side (meters) - 0 = no measurement
 			fsgLayL[fNlay] = 90.E-6;				// Resolution Lower side (meters) - 0 = no measurement
-			fflLay[fNlay] = kTRUE;				// measurement flag = T, scattering only = F
-			//if (i == 1)fflLay[fNlay] = kFALSE;
+			fflLay[fNlay]  = 1.;				// 1 is measurement layer
 			fNlay++; fBlay++;
 			fNm++;
 		}
@@ -307,7 +306,7 @@ void SolGeom::SolGeoFill()
 	fstLayL[fNlay] = 0;			// Stereo angle (rad) - 0(pi/2) = axial(z) layer - Lower side
 	fsgLayU[fNlay] = 0.;			// Resolution Upper side (meters) - 0 = no measurement
 	fsgLayL[fNlay] = 0.;			// Resolution Lower side (meters) - 0 = no measurement
-	fflLay [fNlay] = kFALSE;		// measurement flag = T, scattering only = F
+	fflLay [fNlay] = 0.;		// 0 is scattering layer
 	fNlay++; fBlay++;
 	//
 	// Preshower
@@ -325,7 +324,7 @@ void SolGeom::SolGeoFill()
 		fstLayL[fNlay] = TMath::Pi() / 2.;	// Stereo angle (rad) - 0(pi/2) = axial(z) layer - Lower side
 		fsgLayU[fNlay] = 70.E-6;				// Resolution Upper side (meters) - 0 = no measurement
 		fsgLayL[fNlay] = 1.E-2;				// Resolution Lower side (meters) - 0 = no measurement
-		fflLay[fNlay] = kTRUE;				// measurement flag = T, scattering only = F
+		fflLay[fNlay]  = 1.;				// 1 is measurement layer
 		fNlay++; fBlay++;
 		fNm++;
 	}
@@ -355,7 +354,7 @@ void SolGeom::SolGeoFill()
 			fstLayL[fNlay] = TMath::Pi() / 2.;	// Stereo angle (rad) - 0(pi/2) = axial(z) layer - Lower side
 			fsgLayU[fNlay] = 7.E-6;			// Resolution Upper side (meters) - 0 = no measurement
 			fsgLayL[fNlay] = 7.E-6;			// Resolution Lower side (meters) - 0 = no measurement
-			fflLay[fNlay] = kTRUE;				// measurement flag = T, scattering only = F
+			fflLay[fNlay]  = 1.;			// 1 is measurement layer
 			fNlay++; fFlay++;
 			fNm++;
 		}
@@ -379,7 +378,7 @@ void SolGeom::SolGeoFill()
 			fstLayL[fNlay] = 0;					// Stereo angle (rad) - 0(pi/2) = axial(z) layer - Lower side
 			fsgLayU[fNlay] = 0;					// Resolution Upper side (meters) - 0 = no measurement
 			fsgLayL[fNlay] = 0;					// Resolution Lower side (meters) - 0 = no measurement
-			fflLay[fNlay] = kFALSE;				// measurement flag = T, scattering only = F
+			fflLay[fNlay]  = 0.;				// 0 is scattering layer
 			fNlay++; fFlay++;
 			fNm++;
 		}
@@ -406,7 +405,7 @@ void SolGeom::SolGeoFill()
 			fstLayL[fNlay] = TMath::Pi() / 2.;	// Stereo angle (rad) - 0(pi/2) = axial(z) layer - Lower side
 			fsgLayU[fNlay] = 7.E-6;			// Resolution Upper side (meters) - 0 = no measurement
 			fsgLayL[fNlay] = 90.E-6;			// Resolution Lower side (meters) - 0 = no measurement
-			fflLay[fNlay] = kTRUE;				// measurement flag = T, scattering only = F
+			fflLay[fNlay]  = 1.;				// 1 is mesurement layer
 			fNlay++; fFlay++;
 			fNm++;
 		}
@@ -430,7 +429,7 @@ void SolGeom::SolGeoFill()
 			fstLayL[fNlay] = 0;					// Stereo angle (rad) - 0(pi/2) = axial(z) layer - Lower side
 			fsgLayU[fNlay] = 0;					// Resolution Upper side (meters) - 0 = no measurement
 			fsgLayL[fNlay] = 0;					// Resolution Lower side (meters) - 0 = no measurement
-			fflLay[fNlay] = kFALSE;			// measurement flag = T, scattering only = F
+			fflLay[fNlay]  = 0.;				// 0 is scattering layer
 			fNlay++; fFlay++;
 			fNm++;
 		}
@@ -454,7 +453,7 @@ void SolGeom::SolGeoFill()
 			fstLayL[fNlay] = TMath::Pi() / 2.;	// Stereo angle (rad) - 0(pi/2) = axial(z) layer - Lower side
 			fsgLayU[fNlay] = 70.E-6;			// Resolution Upper side (meters) - 0 = no measurement
 			fsgLayL[fNlay] = 1.E-2;				// Resolution Lower side (meters) - 0 = no measurement
-			fflLay[fNlay] = kTRUE;				// measurement flag = T, scattering only = F
+			fflLay[fNlay]  = 1.;				// 1 is scattering layer
 			fNlay++; fFlay++;
 			fNm++;
 		}
@@ -493,7 +492,7 @@ void SolGeom::GeoPrint(char* fname)
 	}
 	for (Int_t l = 0; l < fNlay; l++)
 	{
-		fprintf(fdata, "%d %s %g %g %g %g %g %d %g %g %g %g %d\n",
+		fprintf(fdata, "%d %s %g %g %g %g %g %d %g %g %g %g %g\n",
 		ftyLay[l], fLyLabl[l].Data(), fxMin[l], fxMax[l], frPos[l], fthLay[l],
 		frlLay[l], fnmLay[l], fstLayU[l], fstLayL[l], fsgLayU[l], fsgLayL[l], fflLay[l]);
 		//cout << strng << endl<< endl;
@@ -599,7 +598,7 @@ void SolGeom::GeoRead(char* fname)
 		fstLayL[fNlay] = (Double_t) stLayL; 
 		fsgLayU[fNlay] = (Double_t) sgLayU; 
 		fsgLayL[fNlay] = (Double_t) sgLayL; 
-		fflLay[fNlay] = (Bool_t) flLay; 
+		fflLay[fNlay]  = (Double_t) flLay;
 		cout << "Layer # " << fNlay << ": " << fLyLabl[fNlay] << ", Position: " << frPos[fNlay]
 			<< ", Measurement: " << fflLay[fNlay] << endl;
 		

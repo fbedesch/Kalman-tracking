@@ -5,7 +5,6 @@
 #include <THStack.h>
 #include <TString.h>
 #include <TLegend.h>
-//#include "examples/classes/SolGeom.h"
 #include "SolGeom.h"
 #include <vector>
 //
@@ -157,19 +156,19 @@ void PlotGeo(TString GEOM)
 	}
 	//
 	// Now plot
-	TCanvas *cnv = new TCanvas("cnv", "Radiation length summary",50,50, 900, 500);
-	cnv->Divide(2,1);
+	TCanvas *cnvX0 = new TCanvas("cnvX0", "Radiation length summary",150,150, 900, 500);
+	cnvX0->Divide(2,1);
 	//
 	TLegend* lgTh = new TLegend(0.2, 0.9, 0.6, 0.70);
 	for(Int_t i=0; i<ng;  i++)lgTh->AddEntry(hX0th[i],gName[i],"f");
 	TLegend* lgCs = new TLegend(0.2, 0.9, 0.6, 0.70);
 	for(Int_t i=0; i<ng;  i++)lgCs->AddEntry(hX0cs[i],gName[i],"f");
 	//
-	cnv->cd(1);
+	cnvX0->cd(1);
 	hSth->Draw();
 	lgTh->Draw();
 	//
-	cnv->cd(2);
+	cnvX0->cd(2);
 	hScs->Draw();
 	lgCs->Draw();
 }

@@ -34,7 +34,8 @@ private:
 	Double_t *fstLayL;	// Stereo angle (rad) - 0(pi/2) = axial(z) layer - Lower side
 	Double_t *fsgLayU;	// Resolution Upper side (meters) - 0 = no measurement
 	Double_t *fsgLayL;	// Resolution Lower side (meters) - 0 = no measurement
-	Bool_t   *fflLay;	// measurement flag = T, scattering only = F
+	//Bool_t   *fflLay;	// measurement flag = T, scattering only = F
+	Double_t   *fflLay;	// measurement layer efficiency. 0 for scattering only.
 	TCanvas  *fcnv;		// pointer to canvas with geo drawing
 	//
 	Double_t fRmin;		// Radius of first measurement layer
@@ -81,7 +82,8 @@ public:
 	Double_t lStL(Int_t nlayer)		{ return fstLayL[nlayer]; }
 	Double_t lSgU(Int_t nlayer)		{ return fsgLayU[nlayer]; }
 	Double_t lSgL(Int_t nlayer)		{ return fsgLayL[nlayer]; }
-	Bool_t   isMeasure(Int_t nlayer)	{ return fflLay[nlayer]; }
+	Bool_t   isMeasure(Int_t nlayer)	{ if(fflLay[nlayer]>0.) return kTRUE; else return kFALSE; }
+	Double_t GetEfficiency(Int_t nlayer){ return fflLay[nlayer];}
 	TCanvas *cnv()					{ return fcnv; }
 	//
 	Double_t GetRmin() { return fRmin; }
