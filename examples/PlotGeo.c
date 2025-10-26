@@ -5,7 +5,8 @@
 #include <THStack.h>
 #include <TString.h>
 #include <TLegend.h>
-#include "examples/classes/SolGeom.h"
+//#include "examples/classes/SolGeom.h"
+#include "SolGeom.h"
 #include <vector>
 //
 //
@@ -171,6 +172,5 @@ void PlotGeo(TString GEOM)
 	cnv->cd(2);
 	hScs->Draw();
 	lgCs->Draw();
-
 }
 
