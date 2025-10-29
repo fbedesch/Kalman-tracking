@@ -96,6 +96,9 @@ void KalmanCk::Fill()
 //
 //==============================================================================
 //
+// Set minimal # measurement limit
+	Int_t MinMeas = 6;
+//
 //	Standard
 	std::vector<TVectorD*>vsD_Pt;
 	std::vector<TVectorD*>vsPhi0_Pt;
@@ -136,20 +139,24 @@ void KalmanCk::Fill()
 			TVector3 x(0.0, 0.0, 0.0);	// Track starting point
 			// Standard results
 			SolTrack Strack(x, p, fG);	// Initialize track
-			Strack.CovCalc(fRes,fMS);
-			asD_Pt(np)    = Strack.s_D()*1.e6;	// Convert to microns
-			asPhi0_Pt(np) = Strack.s_phi0();
-			asPt_Pt(np)   = Strack.s_pt();		// sigma(pt)/pt
-			asZ0_Pt(np)   = Strack.s_z0()*1.e6;	// Convert to microns
-			asCot_Pt(np)  = Strack.s_ct();
+			if(Strack.nMeas() >= MinMeas){
+				Strack.CovCalc(fRes,fMS);
+				asD_Pt(np)    = Strack.s_D()*1.e6;	// Convert to microns
+				asPhi0_Pt(np) = Strack.s_phi0();
+				asPt_Pt(np)   = Strack.s_pt();		// sigma(pt)/pt
+				asZ0_Pt(np)   = Strack.s_z0()*1.e6;	// Convert to microns
+				asCot_Pt(np)  = Strack.s_ct();
+			}
 			// Kalman results
 			SolTrack Ktrack(x, p, fG);	// Initialize track
-			Ktrack.KalmanCov(fRes, fMS);
-			akD_Pt(np)    = Ktrack.s_D()*1.e6;	// Convert to microns
-			akPhi0_Pt(np) = Ktrack.s_phi0();
-			akPt_Pt(np)   = Ktrack.s_pt();		// sigma(pt)/pt
-			akZ0_Pt(np)   = Ktrack.s_z0()*1.e6;	// Convert to microns
-			akCot_Pt(np)  = Ktrack.s_ct();
+			if(Ktrack.nMeas() >= MinMeas){
+				Ktrack.KalmanCov(fRes, fMS);
+				akD_Pt(np)    = Ktrack.s_D()*1.e6;	// Convert to microns
+				akPhi0_Pt(np) = Ktrack.s_phi0();
+				akPt_Pt(np)   = Ktrack.s_pt();		// sigma(pt)/pt
+				akZ0_Pt(np)   = Ktrack.s_z0()*1.e6;	// Convert to microns
+				akCot_Pt(np)  = Ktrack.s_ct();
+			}
 		}
 		//
 		// Store results and fill graphs
@@ -239,20 +246,24 @@ void KalmanCk::Fill()
 			TVector3 x(0.0, 0.0, 0.0);	// Track starting point
 			// Standard results
 			SolTrack Strack(x, p, fG);	// Initialize track
-			Strack.CovCalc(fRes,fMS);
-			asD_Ang(na)    = Strack.s_D()*1.e6;	// Convert to microns
-			asPhi0_Ang(na) = Strack.s_phi0();
-			asPt_Ang(na)   = Strack.s_pt();		// sigma(pt)/pt
-			asZ0_Ang(na)   = Strack.s_z0()*1.e6;	// Convert to microns
-			asCot_Ang(na)  = Strack.s_ct();
+			if(Strack.nMeas() >= MinMeas){
+				Strack.CovCalc(fRes,fMS);
+				asD_Ang(na)    = Strack.s_D()*1.e6;	// Convert to microns
+				asPhi0_Ang(na) = Strack.s_phi0();
+				asPt_Ang(na)   = Strack.s_pt();		// sigma(pt)/pt
+				asZ0_Ang(na)   = Strack.s_z0()*1.e6;	// Convert to microns
+				asCot_Ang(na)  = Strack.s_ct();
+			}
 			// Kalman results
 			SolTrack Ktrack(x, p, fG);	// Initialize track
-			Ktrack.KalmanCov(fRes, fMS);
-			akD_Ang(na)    = Ktrack.s_D()*1.e6;	// Convert to microns
-			akPhi0_Ang(na) = Ktrack.s_phi0();
-			akPt_Ang(na)   = Ktrack.s_pt();		// sigma(pt)/pt
-			akZ0_Ang(na)   = Ktrack.s_z0()*1.e6;	// Convert to microns
-			akCot_Ang(na)  = Ktrack.s_ct();
+			if(Ktrack.nMeas() >= MinMeas){
+				Ktrack.KalmanCov(fRes, fMS);
+				akD_Ang(na)    = Ktrack.s_D()*1.e6;	// Convert to microns
+				akPhi0_Ang(na) = Ktrack.s_phi0();
+				akPt_Ang(na)   = Ktrack.s_pt();		// sigma(pt)/pt
+				akZ0_Ang(na)   = Ktrack.s_z0()*1.e6;	// Convert to microns
+				akCot_Ang(na)  = Ktrack.s_ct();
+			}
 		}
 		//
 		// Store results and fill graphs

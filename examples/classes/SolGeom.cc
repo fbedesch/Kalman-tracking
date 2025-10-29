@@ -63,14 +63,15 @@ SolGeom::SolGeom(char* fname)
 	for (Int_t i = 0; i < fNdet; i++)fEnable[i] = kTRUE;	// default is everything enabled
 	GeoRead(fname);
 	SetMinBoundaries();
-	TString OldLab = " "; Int_t k = 0;
+	Int_t k = 0;
 	for (Int_t i = 0; i < fNlay; i++)
 	{
-		if (fLyLabl[i] != OldLab)
+		Bool_t Done = kFALSE;
+		for(Int_t j=0; j<k; j++)if(fLyLabl[i] == fDtype[j])Done = kTRUE;
+		if(!Done)
 		{
 			fDtype[k] = fLyLabl[i];
 			fDfstLay[k] = i;
-			OldLab = fLyLabl[i];
 			k++;
 			if (k > fNdty)
 			{
@@ -577,13 +578,13 @@ void SolGeom::GeoRead(char* fname)
 	float stLayL;
 	float sgLayU;
 	float sgLayL;
-	Int_t flLay;
+	float flLay;
 	//
-	cout << "SolGeom::GeoRead: before fgets" << endl;
+	//cout << "SolGeom::GeoRead: before fgets" << endl;
 	while (fgets(strng, nbytes, fdata) != NULL)
 	{
 		cout << strng;
-		int status = sscanf(strng, "%d %s %g %g %g %g %g %d %g %g %g %g %d",
+		int status = sscanf(strng, "%d %s %g %g %g %g %g %d %g %g %g %g %g",
 			&tyLay, LyLabl, &xMin, &xMax, &rPos, &thLay,
 			&rlLay, &nmLay, &stLayU, &stLayL, &sgLayU, &sgLayL, &flLay);
 		ftyLay[fNlay] = tyLay; 
