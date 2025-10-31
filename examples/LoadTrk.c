@@ -12,4 +12,5 @@ gROOT->ProcessLine(".L examples/KalmanCheck.c+");
 gROOT->ProcessLine(".L examples/KalmanComp.c+");
 gROOT->ProcessLine(".L examples/PlotGeo.c+");
 gROOT->ProcessLine(".L examples/PlotGeoM.c+");
+gROOT->ProcessLine(".L examples/EfficiencyRes.c+");
 }
