@@ -42,7 +42,7 @@ void KalmanComp(TString GEOM1, TString GEOM2, Bool_t Res=kTRUE, Bool_t MS=kTRUE)
 
 
 	//
-	// PLots for B field = 3 T
+	// PLots for B field = 2 T
 	//
 //
 // Initialize geometry 1

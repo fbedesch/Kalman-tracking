@@ -839,6 +839,7 @@ void SolTrack::CovCalc(Bool_t Res, Bool_t MS)
 		}
 		else{
 			thms[ii] = 0.;
+			Caa[ii] = new TMatrixDSym(5);
 			Caa[ii]->Zero();
 		}
 		//
@@ -1114,7 +1115,7 @@ void SolTrack::KalmanCov(Bool_t Res, Bool_t MS, Double_t mass)
 	// Order hit list by increasing phase
 	//
 	Int_t    *hord = new Int_t[Nhit];		// hi+t order by increasing phase
-	TMath::Sort(Nhit, adhh, hord, kFALSE);		// Order by increasing phase
+	TMath::Sort(Nhit, adhh, hord, kFALSE);	// Order by increasing phase
 	Double_t *zh = new Double_t[Nhit];		// ordered z of hit
 	Double_t *rh = new Double_t[Nhit];		// ordered r of hit
 	Double_t *ph = new Double_t[Nhit];		// ordered phi of hit
@@ -1195,7 +1196,7 @@ void SolTrack::KalmanCov(Bool_t Res, Bool_t MS, Double_t mass)
 		// Process measurement layers
 		//
 		Int_t i = ih[ii];			// True layer number
-		//std::cout<<"Main loop: ii= "<<ii<<", true layer = "<<i<<std::endl;
+		//std::cout<<"Main loop: ii= "<<ii<<", true layer = "<<i<<"Label: "<<fG->lLabl(i)<<std::endl;
 		Double_t Eff = fG->GetEfficiency(i);	// Layer efficiency
 		Double_t Rnd = gRandom->Rndm();
 		if (fG->isMeasure(i) && Rnd<Eff){			// Measurement layer
