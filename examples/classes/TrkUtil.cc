@@ -1,4 +1,4 @@
-#include "examples/classes/TrkUtil.h"
+#include "TrkUtil.h"
 #include <iostream>
 #include <algorithm>
 #include <TSpline.h>
@@ -139,9 +139,22 @@ TVectorD TrkUtil::XPtoPar(TVector3 x, TVector3 p, Double_t Q, Double_t Bz)
 	Double_t cross = x(0) * p(1) - x(1) * p(0);
 	Double_t T = TMath::Sqrt(pt * pt - 2 * a * cross + a * a * r2);
 	Double_t phi0 = TMath::ATan2((p(1) - a * x(0)), (p(0) + a * x(1)));	// Phi0
-	Double_t D;							// Impact parameter D
-	if (pt < 10.0) D = (T - pt) / a;
-	else D = (-2 * cross + a * r2) / (T + pt);
+	Double_t D;								// Impact parameter D
+	//std::cout<<"TrkUtil::XPtoPar: x(0) = "<<x(0)*1.e20<<", x(1) = "<<x(1)*1.e20<<std::endl;
+	if(x(0) < 1.e-10) x(0) = 0.0; if(x(1) < 1.e-10) x(1) = 0.0;
+	if((x(0)*x(0) + x(1)*x(1)) == 0.0) {
+		D = 0.0;	// Avoid rounding off problems
+		//std::cout<<"TrkUtil::XPtoPar: D=0"<<std::endl;
+	}else{
+		if (pt < 10.0){
+			D = (T - pt) / a;
+			//std::cout<<"TrkUtil::XPtoPar: D for pt<10. x= "<<x(0)<<", y= "<<x(1)<<std::endl;
+		}
+		else {
+			D = (-2 * cross + a * r2) / (T + pt);
+			//std::cout<<"TrkUtil::XPtoPar: D for pt>10"<<std::endl;
+		}
+	}
 	//
 	Par(0) = D;		// Store D
 	Par(1) = phi0;	// Store phi0
@@ -174,6 +187,7 @@ TVectorD TrkUtil::XPtoPar(TVector3 x, TVector3 p, Double_t Q)
 	//
 	TVectorD Par(5);
 	Double_t Bz = fBz;
+	//std::cout<<"TrkUtil:: XPtoPar no Bz, x= "<<x(0*1.e20)<<", y= "<<x(1)*1.e20<<std::endl;
 	Par = XPtoPar(x, p, Q, Bz);
 	//
 	return Par;
@@ -979,7 +993,7 @@ void TrkUtil::SetDchBoundaries(Double_t Rmin, Double_t Rmax, Double_t Zmin, Doub
 }
 //
 // Get Trakck length inside DCH volume
-Double_t TrkUtil::TrkLen(TVectorD Par)
+Double_t TrkUtil::TrkLen(TVectorD Par) const
 {
 	Double_t tLength = 0.0;
 	// Check if geometry is initialized

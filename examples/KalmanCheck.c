@@ -14,6 +14,10 @@ void KalmanCheck(TString GEOM, Bool_t Res=kTRUE, Bool_t MS=kTRUE)
 	SolGeom* G = new SolGeom(GeoName);
 	// Start plotting class
 	KalmanCk * K = new KalmanCk(G);
+	Double_t mass = 139.57039e-3;	// Pion
+	//Double_t mass = 493.677e-3;		// Kaon
+	//Double_t mass = 938.272013e-3;	// Proton
+	K->SetParticleMass(mass);
 	K->DrawPtScan(3);	// Draw sample tracks
 	K->SetMode(Res, MS);	// Set tracking mode
 	// Fill graphs

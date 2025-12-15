@@ -11,6 +11,7 @@ KalmanCk::KalmanCk(SolGeom *G)
 //
 	fG = G;				// Initialize geometry
 	fBz = fG->B();			// Magnetic field
+	fMass = 139.57039e-3; // Default is charged pion mass in GeV
 	//
 	// Operation modes
 	fRes = kTRUE;	// Turn on detector resolution
@@ -150,7 +151,7 @@ void KalmanCk::Fill()
 			// Kalman results
 			SolTrack Ktrack(x, p, fG);	// Initialize track
 			if(Ktrack.nMeas() >= MinMeas){
-				Ktrack.KalmanCov(fRes, fMS);
+				Ktrack.KalmanCov(fRes, fMS, fMass);
 				akD_Pt(np)    = Ktrack.s_D()*1.e6;	// Convert to microns
 				akPhi0_Pt(np) = Ktrack.s_phi0();
 				akPt_Pt(np)   = Ktrack.s_pt();		// sigma(pt)/pt
@@ -257,7 +258,7 @@ void KalmanCk::Fill()
 			// Kalman results
 			SolTrack Ktrack(x, p, fG);	// Initialize track
 			if(Ktrack.nMeas() >= MinMeas){
-				Ktrack.KalmanCov(fRes, fMS);
+				Ktrack.KalmanCov(fRes, fMS, fMass);
 				akD_Ang(na)    = Ktrack.s_D()*1.e6;	// Convert to microns
 				akPhi0_Ang(na) = Ktrack.s_phi0();
 				akPt_Ang(na)   = Ktrack.s_pt();		// sigma(pt)/pt
@@ -364,9 +365,11 @@ void KalmanCk::Print()
 	// Legends
 	//
 	TLegend* lsPt = new TLegend(0.2, 0.9, 0.6, 0.70);
+	TLegend* lsPtPt = new TLegend(0.16, 0.43, 0.56, 0.15);
 	TString *LsPt = new TString[fNangFa];
 	//
 	TLegend* lkPt = new TLegend(0.2, 0.9, 0.6, 0.70);
+	TLegend* lkPtPt = new TLegend(0.16, 0.43, 0.56, 0.15);
 	TString *LkPt = new TString[fNangFa];
 	//
 	for(Int_t na=0; na<fNangFa; na++){
@@ -375,6 +378,8 @@ void KalmanCk::Print()
 		LkPt[na].Form("Track angle %.0f#circ", fAngFa[na]);
 		lsPt->AddEntry(gs_D_Pt[na], LsPt[na], "L");
 		lkPt->AddEntry(gk_D_Pt[na], LkPt[na], "L");
+		lsPtPt->AddEntry(gs_D_Pt[na], LsPt[na], "L");
+		lkPtPt->AddEntry(gk_D_Pt[na], LkPt[na], "L");
 	}
 	//
 	// loop over ref angles
@@ -419,12 +424,12 @@ void KalmanCk::Print()
 		GrSetup(gs_Pt_Pt[na],ymax_pt,iColor,title_pt,axis);
 		if(na == 0)gs_Pt_Pt[na]->Draw("APL");
 		else gs_Pt_Pt[na]->Draw("SAMEPL");
-		lsPt->Draw("SAME");
+		lsPtPt->Draw("SAME");
 		ckPt->cd(3); gPad->SetLogy(1);	// Kalman Pt plots
 		GrSetup(gk_Pt_Pt[na],ymax_pt,iColor,title_pt,axis);
 		if(na == 0)gk_Pt_Pt[na]->Draw("APL");
 		else gk_Pt_Pt[na]->Draw("SAMEPL");
-		lkPt->Draw("SAME");
+		lkPtPt->Draw("SAME");
 		//
 		// Z0 plots vs Pt
 		csPt->cd(4); gPad->SetLogy(1);	// standard Z0 plots
@@ -472,9 +477,13 @@ void KalmanCk::Print()
 	// Legends
 	//
 	TLegend* lsAng = new TLegend(0.2, 0.9, 0.6, 0.70);
+	TLegend* lsAngPt = new TLegend(0.16, 0.43, 0.56, 0.22);
+	TLegend* lsAngZ0 = new TLegend(0.14, 0.35, 0.54, 0.15);
 	TString *LsAng = new TString[fNptFpt];
 	//
 	TLegend* lkAng = new TLegend(0.2, 0.9, 0.6, 0.70);
+	TLegend* lkAngPt = new TLegend(0.16, 0.43, 0.56, 0.22);
+	TLegend* lkAngZ0 = new TLegend(0.14, 0.35, 0.54, 0.15);
 	TString *LkAng = new TString[fNptFpt];
 	//
 	for(Int_t np=0; np<fNptFpt; np++){
@@ -483,6 +492,10 @@ void KalmanCk::Print()
 		LkAng[np].Form("Track pt %.1f GeV/c", fPtFpt[np]);
 		lsAng->AddEntry(gs_D_Ang[np], LsAng[np], "L");
 		lkAng->AddEntry(gk_D_Ang[np], LkAng[np], "L");
+		lsAngPt->AddEntry(gs_D_Ang[np], LsAng[np], "L");
+		lkAngPt->AddEntry(gk_D_Ang[np], LkAng[np], "L");
+		lsAngZ0->AddEntry(gs_D_Ang[np], LsAng[np], "L");
+		lkAngZ0->AddEntry(gk_D_Ang[np], LkAng[np], "L");
 	}
 	ckAng->Divide(3,2);
 	//
@@ -525,12 +538,12 @@ void KalmanCk::Print()
 		GrSetup(gs_Pt_Ang[np],ymax_pt,np+1,title_pt,axis);
 		if(np == 0)gs_Pt_Ang[np]->Draw("APL");
 		else gs_Pt_Ang[np]->Draw("SAMEPL");
-		lsAng->Draw("SAME");
+		lsAngPt->Draw("SAME");
 		ckAng->cd(3); gPad->SetLogy(1);	// Kalman Pt plots
 		GrSetup(gk_Pt_Ang[np],ymax_pt,np+1,title_pt,axis);
 		if(np == 0)gk_Pt_Ang[np]->Draw("APL");
 		else gk_Pt_Ang[np]->Draw("SAMEPL");
-		lkAng->Draw("SAME");
+		lkAngPt->Draw("SAME");
 		//
 		// Z0 plots vs Ang
 		csAng->cd(4); gPad->SetLogy(1);	// standard Z0 plots
@@ -539,12 +552,12 @@ void KalmanCk::Print()
 		GrSetup(gs_z0_Ang[np],ymax_z,np+1,title_z,axis);
 		if(np == 0)gs_z0_Ang[np]->Draw("APL");
 		else gs_z0_Ang[np]->Draw("SAMEPL");
-		lsAng->Draw("SAME");
+		lsAngZ0->Draw("SAME");
 		ckAng->cd(4); gPad->SetLogy(1);	// Kalman Z0 plots
 		GrSetup(gk_z0_Ang[np],ymax_z,np+1,title_z,axis);
 		if(np == 0)gk_z0_Ang[np]->Draw("APL");
 		else gk_z0_Ang[np]->Draw("SAMEPL");
-		lkAng->Draw("SAME");
+		lkAngZ0->Draw("SAME");
 		//
 		// Cot(theta) plots vs Angle
 		csAng->cd(5); gPad->SetLogy(1);	// standard cot(theta) plots

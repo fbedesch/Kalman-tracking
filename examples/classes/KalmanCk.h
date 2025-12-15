@@ -31,6 +31,8 @@ private:
 	// Pointer to geometry
 	SolGeom *fG;		// Geometry class
 	Double_t fBz;		// Magnetic field		
+	// Particle mass
+	Double_t fMass;
 	//
 	// Resolution and multiple scattering activation flags
 	Bool_t fRes;		// Detactor resolution flag
@@ -84,6 +86,7 @@ public:
 	//
 	// Methods
 	//
+	void SetParticleMass(Double_t mass){ fMass = mass;};
 	//
 	// Utility
 	void GrSetup(TGraph* &g, Double_t yMax, Int_t Color, TString title, TString axis);
