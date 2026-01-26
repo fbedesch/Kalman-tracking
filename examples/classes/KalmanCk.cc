@@ -151,7 +151,7 @@ void KalmanCk::Fill()
 			// Kalman results
 			SolTrack Ktrack(x, p, fG);	// Initialize track
 			if(Ktrack.nMeas() >= MinMeas){
-				Ktrack.KalmanCov(fRes, fMS, fMass);
+				Ktrack.KalmanCovT(fRes, fMS, fMass);
 				akD_Pt(np)    = Ktrack.s_D()*1.e6;	// Convert to microns
 				akPhi0_Pt(np) = Ktrack.s_phi0();
 				akPt_Pt(np)   = Ktrack.s_pt();		// sigma(pt)/pt
@@ -258,7 +258,7 @@ void KalmanCk::Fill()
 			// Kalman results
 			SolTrack Ktrack(x, p, fG);	// Initialize track
 			if(Ktrack.nMeas() >= MinMeas){
-				Ktrack.KalmanCov(fRes, fMS, fMass);
+				Ktrack.KalmanCovT(fRes, fMS, fMass);
 				akD_Ang(na)    = Ktrack.s_D()*1.e6;	// Convert to microns
 				akPhi0_Ang(na) = Ktrack.s_phi0();
 				akPt_Ang(na)   = Ktrack.s_pt();		// sigma(pt)/pt
