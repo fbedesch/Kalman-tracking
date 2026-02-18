@@ -48,3 +48,5 @@ python3 perf_multi.py \
   --inc examples/classes --compile --workers 60 --latex --npoints 100 \
   --outdir /eos/user/s/selvaggi/www/maps
 ```
+
+When using the `--latex` flag, a beamer PDF report like [this one](https://mselvaggi.web.cern.ch/maps/report_idea-MSon-ResOn-KalmanOff-2T_cld-MSon-ResOn-KalmanOff-2T/report_idea-MSon-ResOn-KalmanOff-2T_cld-MSon-ResOn-KalmanOff-2T.pdf) will be produced.
