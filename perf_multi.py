@@ -128,7 +128,7 @@ plt.rcParams.update({
 # === Scan grids (edit here) =================================
 # ============================================================
 
-# θ values used in the plots vs p (fixed list)
+# theta values used in the plots vs p (fixed list)
 THETA_SET_FOR_PSCAN = [45.0, 60.0, 90.0]  # deg
 # THETA_SET_FOR_PSCAN = [90.0]  # deg
 
@@ -136,11 +136,11 @@ THETA_SET_FOR_PSCAN = [45.0, 60.0, 90.0]  # deg
 P_RANGE_PSCAN  = (1.0, 100.0)   # GeV
 P_NBINS_PSCAN  = 20
 
-# θ scan (for plots vs θ): range + number of bins (spacing auto from PLOT_CFG[*].logx_t; default linear)
+# theta scan (for plots vs theta): range + number of bins (spacing auto from PLOT_CFG[*].logx_t; default linear)
 THETA_RANGE_TSCAN = (10.0, 90.0)  # deg
 THETA_NBINS_TSCAN = 16
 
-# p values used IN θ-scan (for plots vs θ): explicit list
+# p values used IN theta-scan (for plots vs theta): explicit list
 P_LIST_TSCAN = [1.0, 10.0, 100]   # GeV
 
 PARAMS = ["Pt", "D", "Z0", "Theta", "Phi"]  # custom order
@@ -196,7 +196,7 @@ def polar_to_components(p_mag, theta_deg):
 
 
 def eval_point(p_mag, theta_deg, geom, npoints, minmeas, doKalman, doRes, doMS, verbose=False):
-    if verbose: print(f"    → p={p_mag:.3g} GeV, θ={theta_deg:.1f}°")
+    if verbose: print(f"    -> p={p_mag:.3g} GeV, theta={theta_deg:.1f}°")
     x0 = ROOT.TVector3(0.,0.,0.)
     px,py,pz = polar_to_components(p_mag, theta_deg)
     pvec = ROOT.TVector3(px,py,pz)
@@ -225,7 +225,7 @@ def eval_point_samples(p_mag, theta_deg, geom, npoints, minmeas, doKalman, doRes
     for all PARAMS instead of their mean.
     """
     if verbose:
-        print(f"    [samples] p={p_mag:.3g} GeV, θ={theta_deg:.1f}°")
+        print(f"    [samples] p={p_mag:.3g} GeV, theta={theta_deg:.1f}°")
 
     x0 = ROOT.TVector3(0., 0., 0.)
     px, py, pz = polar_to_components(p_mag, theta_deg)
@@ -299,12 +299,12 @@ def build_theta_grid():
         grid=list(np.logspace(np.log10(tmin),np.log10(tmax),nbins)); mode="log"
     else:
         grid=list(np.linspace(tmin,tmax,nbins)); mode="linear"
-    print(f"θ-grid: {mode}-spaced {nbins} pts in [{tmin},{tmax}] deg")
+    print(f"theta-grid: {mode}-spaced {nbins} pts in [{tmin},{tmax}] deg")
     return grid
 
 def get_p_for_tscan():
     vals = list(P_LIST_TSCAN)
-    print(f"p (for θ-scan): explicit list with {len(vals)} values -> {vals}")
+    print(f"p (for theta-scan): explicit list with {len(vals)} values -> {vals}")
     return vals
 
 # ============================================================
@@ -333,7 +333,7 @@ def parallel_scan_vs_theta_for_detector(theta_grid, ps, geom, npoints, minmeas, 
     results={p:{pv:[np.nan]*len(theta_grid) for pv in ps} for p in PARAMS}
     tasks=[(ip,it,pv,th) for ip,pv in enumerate(ps) for it,th in enumerate(theta_grid)]
     total=len(tasks); done=0
-    print(f"  [θ-scan] {total} points | {workers} threads")
+    print(f"  [theta-scan] {total} points | {workers} threads")
     with cf.ThreadPoolExecutor(max_workers=workers) as ex:
         futs={ex.submit(eval_point,pv,th,geom,npoints,minmeas,doKalman,doRes,doMS,verbose):(ip,it,pv,th)
               for ip,it,pv,th in tasks}
@@ -781,7 +781,7 @@ def make_hist_plots_multi(hist_samples_all, labels, bfields, outdir):
     nbins_hist = 60
     outdir = Path(outdir)
 
-    # All detectors share the same set of p and θ by construction
+    # All detectors share the same set of p and theta by construction
     for param in PARAMS:
         # get p values from first detector
         p_keys = sorted(hist_samples_all[0][param].keys())
@@ -1133,11 +1133,11 @@ def main():
     
     ap.add_argument("--inc", default="examples/classes", help="Directory with SolGeom.h / SolTrack.h")
     ap.add_argument("--outdir", default="plots_effres_multi", help="Output directory for PNG/PDFs")
-    ap.add_argument("--npoints", type=int, default=1000, help="#throws per (p,θ) point")
+    ap.add_argument("--npoints", type=int, default=1000, help="#throws per (p,theta) point")
     ap.add_argument("--minmeas", type=int, default=6, help="Minimum #measurements to accept")
     ap.add_argument("--compile", action="store_true", help="(Re)compile C++ sources")
     ap.add_argument("--workers", type=int, default=os.cpu_count(), help="Parallel threads per detector")
-    ap.add_argument("--verbose-points", action="store_true", help="Print each (p,θ) point as it starts")
+    ap.add_argument("--verbose-points", action="store_true", help="Print each (p,theta) point as it starts")
     ap.add_argument("--latex", action="store_true", help="Produce a LaTeX report (report.tex + report.pdf if pdflatex is available)")
     args=ap.parse_args()
 
@@ -1241,7 +1241,7 @@ def main():
             p_grid, THETA_SET_FOR_PSCAN, G,
             args.npoints, args.minmeas, dKalman, dRes, dMS, args.workers, args.verbose_points
         )
-        print("Scanning vs θ ...")
+        print("Scanning vs theta ...")
         res_t = parallel_scan_vs_theta_for_detector(
             theta_grid, p_for_tscan, G,
             args.npoints, args.minmeas, dKalman, dRes, dMS, args.workers, args.verbose_points
